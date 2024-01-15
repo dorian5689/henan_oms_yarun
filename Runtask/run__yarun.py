@@ -431,10 +431,11 @@ class RunSxz(object):
 
     def report_load_dl(self, table0, henan_oms_data):
         table0.ele(F'{henan_ele_dict.get("report_load")}').click()
+        time.sleep(3)
         print(F'点击了收报负荷！')
         table0.ele(F'{henan_ele_dict.get("report_load_button_dl")}').click()
-        self.page.wait()
-
+        self.page.wait
+        time.sleep(3)
         if self.today_1 == table0.ele(F'{henan_ele_dict.get("upload_date")}').text:
             self.send_ding_dl(table0)
         else:
@@ -444,6 +445,7 @@ class RunSxz(object):
             self.upload_button_dl(table0)
 
     def send_ding_dl(self, table0):
+        time.sleep(3)
         save_wind_wfname = self.save_pic(table0)
         from DingInfo.DingBotMix import DingApiTools
         # 天润
