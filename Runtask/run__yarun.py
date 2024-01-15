@@ -63,11 +63,29 @@ class ReadyLogin(object):
     #     for k, v in henan_wfname_dict_num.items():
     #         usb_ids.append(k)
     #     return usb_ids
+    def check_data_report(self, i, uuid_num):
+        from DataBaseInfo.MysqlInfo.MysqlTools import MysqlCurd
+
+        new_nanfang = F'../DataBaseInfo/MysqlInfo/new_nanfang.yml'
+        Mc = MysqlCurd(new_nanfang)
+        sql = F"select  场站 from data_oms_uk  where usb序号='{i}' and uuid ='{uuid_num}'   "
+        wfname = Mc.query_sql(sql)[0][0]
+        import datetime
+
+        yes_day = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+
+        sql_ = F"select  是否已完成 from data_oms  where 电场名称='{wfname}' and 日期 ='{yes_day}'   "
+
+        num = Mc.query_sql(sql_)[0][0]
+        return int(num)
 
     def change_usbid(self):
         res, CU = self.select_uk()
         from Config.ConfigUkUsb import henan_wfname_dict_num
         for i, uuid in henan_wfname_dict_num.items():
+            if self.check_data_report(i, uuid_num=uuid) == 1:
+                break
+
             from datetime import datetime
             # 获取当前时间
             current_time = datetime.now()
@@ -81,11 +99,7 @@ class ReadyLogin(object):
                 CU.radio_switch(f'{i}')
                 time.sleep(3)
                 res.minimize()
-            try:
-                slect_zhuangtai_sql = F"select  usb序号,UK密钥MAC地址,场站,外网oms账号,外网oms密码  from data_oms_uk  where usb序号='{i}' "
 
-                data_info = MysqlCurd().query_sql_return_header_and_data(slect_zhuangtai_sql).values.tolist()
-            except:
                 new_nanfang = F'../DataBaseInfo/MysqlInfo/new_nanfang.yml'
                 slect_zhuangtai_sql = F"select  usb序号,UK密钥MAC地址,场站,外网oms账号,外网oms密码,wfname_id  from data_oms_uk  where usb序号='{i}' and uuid ='{uuid}'  "
 
@@ -477,7 +491,6 @@ class RunSxz(object):
     def update_mysql(self):
 
         from DataBaseInfo.MysqlInfo.MysqlTools import MysqlCurd
-        MC = MysqlCurd()
         from datetime import datetime
         # 获取当前时间
         current_time = datetime.now()
@@ -485,20 +498,18 @@ class RunSxz(object):
         end_run_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
         update_sql_success = F"update   data_oms  set  是否已完成 =1 ,填报开始时间 = '{self.start_run_time}',填报结束时间 = '{end_run_time}' where   日期='{self.today_1}' and 电场名称='{self.wfname}'"
 
-        MC.update(update_sql_success)
         new_nanfang = F'../DataBaseInfo/MysqlInfo/new_nanfang.yml'
-        NEWMC = MysqlCurd(new_nanfang)
-        print(NEWMC.query_sql())
-        NEWMC.update(update_sql_success)
+        Mc = MysqlCurd(new_nanfang)
+        print(Mc.query_sql())
+        Mc.update(update_sql_success)
 
     def henan_data(self):
         from DataBaseInfo.MysqlInfo.MysqlTools import MysqlCurd
         from ReadExcle.HenanOmsConfig import henan_oms_config, henan_oms_config_new
 
-
         new_nanfang = F'../DataBaseInfo/MysqlInfo/new_nanfang.yml'
-        MC = MysqlCurd(new_nanfang)
-        df_oms = MC.query_sql_return_header_and_data(henan_oms_config_new)
+        Mc = MysqlCurd(new_nanfang)
+        df_oms = Mc.query_sql_return_header_and_data(henan_oms_config_new)
 
         time.sleep(1)
         henan_oms_data1 = df_oms.loc[
