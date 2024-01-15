@@ -1,0 +1,6 @@
+
+host: soam-mysql-13965e014815e193.elb.cn-northwest-1.amazonaws.com.cn
+port: 3306
+username: nanfang
+password: 5yY7WtANHx2kpc5H
+database: nanfang

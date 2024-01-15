@@ -1,0 +1,44 @@
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple   -r requirements.txt
+
+pip list --format=freeze > requirements.txt
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple    pyserial
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple    pynput
+
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple    ddddocr
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple    PyYAML
+pip install --upgrade pip -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+pip freeze >requirements.txt
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple   DrissionPage==4.0.0b36
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple    schedule
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple    ddddocr
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple    pygetwindow
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple    PyYAML
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple    pyserial
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple    pygetwindow
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple    pynput
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple    pygetwindow
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple    pymysql
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple    pandas
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple    pyautogui
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple    mss
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple    psycopg2
+
+
+
+# 列出所有已安装的包
+python -m pip list --format=freeze > packages.txt
+
+# 逐行读取并卸载每个包（包含版本号）
+Get-Content packages.txt | ForEach-Object { python -m pip uninstall -y $_ }
+
+# 或者，如果只需要包名而不考虑版本：
+Get-Content packages.txt | Select-String -Pattern '^[^=\s]+' -NotMatch | ForEach-Object { python -m pip uninstall -y $_.Line.Trim() }
+
+
+#取消http代理
+git config --global --unset http.proxy
+
+#取消https代理
+git config --global --unset https.proxy
+
