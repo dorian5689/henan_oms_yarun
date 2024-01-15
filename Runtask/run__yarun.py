@@ -495,13 +495,10 @@ class RunSxz(object):
         from DataBaseInfo.MysqlInfo.MysqlTools import MysqlCurd
         from ReadExcle.HenanOmsConfig import henan_oms_config, henan_oms_config_new
 
-        try:
-            MC = MysqlCurd()
-            df_oms = MC.query_sql_return_header_and_data(henan_oms_config)
-        except:
-            new_nanfang = F'../DataBaseInfo/MysqlInfo/new_nanfang.yml'
-            MC = MysqlCurd(new_nanfang)
-            df_oms = MC.query_sql_return_header_and_data(henan_oms_config_new)
+
+        new_nanfang = F'../DataBaseInfo/MysqlInfo/new_nanfang.yml'
+        MC = MysqlCurd(new_nanfang)
+        df_oms = MC.query_sql_return_header_and_data(henan_oms_config_new)
 
         time.sleep(1)
         henan_oms_data1 = df_oms.loc[
